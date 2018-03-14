@@ -14,14 +14,27 @@ This project was an assignment for the [Operating Systems](https://github.com/wi
 ### Usage
 #### Compile
 ```
-make setup
+make all 
 ```
 
-#### Run scheduler
+#### Run `diskinfo` 
 ```
-make run f=trains.txt
-# OR
-./mts.o trains.txt
+./diskinfo.o test.img
+```
+
+#### Run `disklist` 
+```
+./disklist.o test.img /sub_dir 
+```
+
+#### Run `diskget` 
+```
+./diskget.o test.img /sub_dir/foo2.txt foo.txt 
+```
+
+#### Run `diskput` 
+```
+./diskput.o test.img foo.txt /sub_dir/foo3.txt 
 ```
 
 #### Clean build

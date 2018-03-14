@@ -1,11 +1,9 @@
-.phony setup:
-setup: file_system 
-
-file_system: file_system.c
-	gcc -pthread file_system.c -o file_system.o
-
-run: file_system.o
-	./file_system.o
+.PHONY setup:
+all:
+	gcc -Wall -D PART1 parts.c -o diskinfo.o
+	gcc -Wall -D PART2 parts.c -o disklist.o
+	gcc -Wall -D PART3 parts.c -o diskget.o
+	gcc -Wall -D PART4 parts.c -o diskput.o
 
 .PHONY clean:
 clean:
