@@ -1,11 +1,11 @@
 .phony setup:
-setup: mts
+setup: file_system 
 
-mts: mts.c
-	gcc -pthread mts.c -o mts.o
+file_system: file_system.c
+	gcc -pthread file_system.c -o file_system.o
 
-run: mts.o
-	./mts.o $(f)
+run: file_system.o
+	./file_system.o
 
 .PHONY clean:
 clean:
