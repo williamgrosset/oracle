@@ -7,37 +7,42 @@
 ## TODO
 + Generate multiple binaries from single source
 + Finish `diskinfo` (PART 1)
++ Finish `diskinfo` (PART 2)
++ Finish `diskinfo` (PART 3)
++ Finish `diskinfo` (PART 4)
++ Clean-up repo
++ Test on linux lab machine
 
 ## Overview
-This project was an assignment for the [Operating Systems](https://github.com/williamgrosset/thomas/blob/master/csc360_p2.pdf) class at the University of Victoria. The multithreaded train scheduler is a simulation of priority-based trains being loaded concurrently and dispatched across a single track. See the [requirements document](https://github.com/williamgrosset/thomas/blob/master/csc360_p2.pdf) and [design document](https://github.com/williamgrosset/thomas/blob/master/csc360_p2_solutions.pdf) for more details.
+This project was an assignment for the [Operating Systems](https://github.com/williamgrosset/thomas/blob/master/csc360_p3.pdf) class at the University of Victoria. The file system implementation
 
-### Usage
-#### Compile
+## Usage
+### Compile
 ```
 make all 
 ```
 
-#### Run `diskinfo` 
+### Clean build
+```
+make clean
+```
+
+### Run `diskinfo`
 ```
 ./diskinfo.o test.img
 ```
 
-#### Run `disklist` 
+### Run `disklist`
 ```
 ./disklist.o test.img /sub_dir 
 ```
 
-#### Run `diskget` 
+### Run `diskget`
 ```
 ./diskget.o test.img /sub_dir/foo2.txt foo.txt 
 ```
 
-#### Run `diskput` 
+### Run `diskput`
 ```
 ./diskput.o test.img foo.txt /sub_dir/foo3.txt 
-```
-
-#### Clean build
-```
-make clean
 ```
