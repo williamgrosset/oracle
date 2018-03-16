@@ -5,7 +5,8 @@
 </p>
 
 ## TODO
-+ Convert all integer values to Big Endian (`netinit/in.h`)
++ Read in binary file into buffer and hold bytes in array
++ Convert all integer values to Big Endian (`netinit/in.h`: `htons`)
 + Generate multiple binaries from single source
 + Finish `diskinfo` (PART 1)
   + ...

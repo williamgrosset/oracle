@@ -22,11 +22,15 @@ int main(int argc, char* argv[]) {
   size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
   buffer = malloc(size);
-  fread(buffer, sizeof *buffer, size, fp);
 
-  int i;
-  for(i = 0; i < size; i++) {
-    printf("%02x ", buffer[i]); // prints a series of bytes
+  if (fread(buffer, sizeof *buffer, size, fp) != size) {
+    printf("Error while reading file.");
+    return(EXIT_FAILURE);
+  } else {
+    int i;
+    for(i = 0; i < size; i++) {
+      printf("%02x ", buffer[i]);
+    }
   }
 
   fclose(fp);
