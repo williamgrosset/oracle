@@ -5,12 +5,13 @@
 </p>
 
 ## TODO
++ Convert all integer values to Big Endian (`netinit/in.h`)
 + Generate multiple binaries from single source
 + Finish `diskinfo` (PART 1)
   + ...
-+ Finish `diskinfo` (PART 2)
-+ Finish `diskinfo` (PART 3)
-+ Finish `diskinfo` (PART 4)
++ Finish `disklist` (PART 2)
++ Finish `diskget` (PART 3)
++ Finish `diskput` (PART 4)
 + Clean-up repo
 + Test on linux lab machine
 
