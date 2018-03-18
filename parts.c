@@ -3,6 +3,18 @@
 #include <stdbool.h>
 #include <string.h>
 
+int get_super_block_info(unsigned char* buffer, int start, int end) {
+  char hex_string[1024];
+  int k;
+  for (k = start; k <= end; k++) {
+    char temp[1024];
+    snprintf(temp, sizeof(temp), "%02x", buffer[k]);
+    strcat(hex_string, temp);
+  }
+  int number = (int)strtol(hex_string, NULL, 16);
+  return number;
+}
+
 void diskinfo(int argc, char* argv[]) {}
 void disklist(int argc, char* argv[]) {}
 void diskget(int argc, char* argv[]) {}
@@ -28,24 +40,15 @@ int main(int argc, char* argv[]) {
     printf("Error while reading file.");
     return(EXIT_FAILURE);
   } else {
+    // For testing purposes
     int i;
     for(i = 0; i < 12; i++) {
       printf("%x ", buffer[i]);
     }
   }
 
-  printf("Block size:\n");
-  char block_size[size];
-  int k;
-  for (k = 8; k < 10; k++) {
-    char temp[1024];
-    snprintf(temp, sizeof(temp), "%02x", buffer[k]);
-    strcat(block_size, temp);
-  }
-  printf("block_size ARRAY:\n");
-  printf("%s\n", block_size);
+  int number = get_super_block_info(buffer, 8, 9);
   printf("block_size VALUE:\n");
-  int number = (int)strtol(block_size, NULL, 16);
   printf("%i\n", number);
 
   fclose(fp);
