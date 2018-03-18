@@ -4,14 +4,16 @@
 #include <string.h>
 
 int get_super_block_info(unsigned char* buffer, int start, int end) {
-  char hex_string[1024];
-  int k;
-  for (k = start; k <= end; k++) {
+  char hex_val[1024];
+  int i;
+  for (i = start; i < end; i++) {
     char temp[1024];
-    snprintf(temp, sizeof(temp), "%02x", buffer[k]);
-    strcat(hex_string, temp);
+    snprintf(temp, sizeof(temp), "%02x", buffer[i]);
+    strcat(hex_val, temp);
+    memset(temp, 0, sizeof(temp));
   }
-  int number = (int)strtol(hex_string, NULL, 16);
+  int number = (int)strtol(hex_val, NULL, 16);
+  memset(hex_val, 0, sizeof(hex_val));
   return number;
 }
 
@@ -42,14 +44,25 @@ int main(int argc, char* argv[]) {
   } else {
     // For testing purposes
     int i;
-    for(i = 0; i < 12; i++) {
-      printf("%x ", buffer[i]);
+    for(i = 0; i < 0; i++) {
+      printf("%02x ", buffer[i]);
     }
   }
 
-  int number = get_super_block_info(buffer, 8, 9);
-  printf("block_size VALUE:\n");
-  printf("%i\n", number);
+  int block_size = get_super_block_info(buffer, 8, 10);
+  int block_count = get_super_block_info(buffer, 10, 14);
+  int FAT_start = get_super_block_info(buffer, 14, 18);
+  int FAT_blocks = get_super_block_info(buffer, 18, 22);
+  int root_dir_start = get_super_block_info(buffer, 22, 26);
+  int root_dir_blocks = get_super_block_info(buffer, 26, 30);
+
+  printf("Super block information:\n");
+  printf("Block size: %i\n", block_size);
+  printf("Block count: %i\n", block_count);
+  printf("FAT starts: %i\n", FAT_start);
+  printf("FAT blocks: %i\n", FAT_blocks);
+  printf("Root directory start: %i\n", root_dir_start);
+  printf("Root directory blocks: %i\n", root_dir_blocks);
 
   fclose(fp);
   free(buffer);
