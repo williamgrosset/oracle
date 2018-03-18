@@ -44,6 +44,9 @@ int main(int argc, char* argv[]) {
   }
   printf("block_size ARRAY:\n");
   printf("%s\n", block_size);
+  printf("block_size VALUE:\n");
+  int number = (int)strtol(block_size, NULL, 16);
+  printf("%i\n", number);
 
   fclose(fp);
   free(buffer);
