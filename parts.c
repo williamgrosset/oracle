@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 void diskinfo(int argc, char* argv[]) {}
 void disklist(int argc, char* argv[]) {}
@@ -28,10 +29,21 @@ int main(int argc, char* argv[]) {
     return(EXIT_FAILURE);
   } else {
     int i;
-    for(i = 0; i < size; i++) {
-      printf("%02x ", buffer[i]);
+    for(i = 0; i < 12; i++) {
+      printf("%x ", buffer[i]);
     }
   }
+
+  printf("Block size:\n");
+  char block_size[size];
+  int k;
+  for (k = 8; k < 10; k++) {
+    char temp[1024];
+    snprintf(temp, sizeof(temp), "%02x", buffer[k]);
+    strcat(block_size, temp);
+  }
+  printf("block_size ARRAY:\n");
+  printf("%s\n", block_size);
 
   fclose(fp);
   free(buffer);
