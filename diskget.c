@@ -1,38 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-unsigned char* fill_buffer(char* file) {
-  unsigned char* buffer;
-  size_t size;
-  FILE *fp;
-
-  fp = fopen(file, "r");
-  if (fp == NULL) {
-    perror("Error opening file.");
-    return(EXIT_FAILURE);
-  }
-
-  fseek(fp, 0, SEEK_END);
-  size = ftell(fp);
-  fseek(fp, 0, SEEK_SET);
-  buffer = malloc(size);
-
-  if (fread(buffer, sizeof *buffer, size, fp) != size) {
-    printf("Error while reading file.");
-    return(EXIT_FAILURE);
-  } else {
-    // For testing purposes
-    int i;
-    for(i = 0; i < 0; i++) {
-      printf("%02x ", buffer[i]);
-    }
-  }
-
-  fclose(fp);
-  // free(buffer) ?
-  return buffer;
-}
+#include "diskhelper.h" 
 
 int get_super_block_info(unsigned char* buffer, int start, int end) {
   char hex_val[1024];
@@ -52,7 +21,7 @@ int get_super_block_info(unsigned char* buffer, int start, int end) {
 int main(int argc, char* argv[]) {
   // TODO: handle correct argv length
 
-  unsigned char* buffer = fill_buffer(argv[1]);
+  unsigned char* buffer = disk_buffer(argv[1]);
 
   int block_size = get_super_block_info(buffer, 8, 10);
   int block_count = get_super_block_info(buffer, 10, 14);
