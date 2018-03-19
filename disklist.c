@@ -18,11 +18,9 @@ int get_super_block_info(unsigned char* buffer, int start, int end) {
   return number;
 }
 
-int get_FAT_info() { return 0; }
-
 int main(int argc, char* argv[]) {
-  if (argc != 2) {
-    printf("Enter the correct amount of args: diskinfo <file system img>\n");
+  if (argc != 3) {
+    printf("Enter the correct amount of args: disklist <file system img> <directory>\n");
     return(EXIT_FAILURE);
   }
 
