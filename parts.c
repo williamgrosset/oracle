@@ -3,12 +3,12 @@
 #include <stdbool.h>
 #include <string.h>
 
-unsigned char* initialize_buffer(char* argv[]) {
+unsigned char* initialize_buffer(char* file) {
   unsigned char* buffer;
   size_t size;
   FILE *fp;
 
-  fp = fopen(argv[1], "r");
+  fp = fopen(file, "r");
   if (fp == NULL) {
     perror("Error opening file.");
     return(EXIT_FAILURE);
@@ -54,7 +54,7 @@ void diskget(int argc, char* argv[]) {}
 void diskput(int argc, char* argv[]) {}
 
 int main(int argc, char* argv[]) {
-  unsigned char* buffer = initialize_buffer(argv);
+  unsigned char* buffer = initialize_buffer(argv[1]);
 
   int block_size = get_super_block_info(buffer, 8, 10);
   int block_count = get_super_block_info(buffer, 10, 14);
