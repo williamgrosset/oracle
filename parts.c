@@ -3,27 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-int get_super_block_info(unsigned char* buffer, int start, int end) {
-  char hex_val[1024];
-  int i;
-  for (i = start; i < end; i++) {
-    char temp[1024];
-    snprintf(temp, sizeof(temp), "%02x", buffer[i]);
-    strcat(hex_val, temp);
-    memset(temp, 0, sizeof(temp));
-  }
-  int number = (int)strtol(hex_val, NULL, 16);
-  memset(hex_val, 0, sizeof(hex_val));
-  return number;
-}
-
-void diskinfo(int argc, char* argv[]) {}
-void disklist(int argc, char* argv[]) {}
-void diskget(int argc, char* argv[]) {}
-void diskput(int argc, char* argv[]) {}
-
-int main(int argc, char* argv[]) {
-  unsigned char *buffer;
+unsigned char* initialize_buffer(char* argv[]) {
+  unsigned char* buffer;
   size_t size;
   FILE *fp;
 
@@ -49,6 +30,32 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  fclose(fp);
+  return buffer;
+}
+
+int get_super_block_info(unsigned char* buffer, int start, int end) {
+  char hex_val[1024];
+  int i;
+  for (i = start; i < end; i++) {
+    char temp[1024];
+    snprintf(temp, sizeof(temp), "%02x", buffer[i]);
+    strcat(hex_val, temp);
+    memset(temp, 0, sizeof(temp));
+  }
+  int number = (int)strtol(hex_val, NULL, 16);
+  memset(hex_val, 0, sizeof(hex_val));
+  return number;
+}
+
+void diskinfo(int argc, char* argv[]) {}
+void disklist(int argc, char* argv[]) {}
+void diskget(int argc, char* argv[]) {}
+void diskput(int argc, char* argv[]) {}
+
+int main(int argc, char* argv[]) {
+  unsigned char* buffer = initialize_buffer(argv);
+
   int block_size = get_super_block_info(buffer, 8, 10);
   int block_count = get_super_block_info(buffer, 10, 14);
   int FAT_start = get_super_block_info(buffer, 14, 18);
@@ -62,9 +69,7 @@ int main(int argc, char* argv[]) {
   printf("FAT starts: %i\n", FAT_start);
   printf("FAT blocks: %i\n", FAT_blocks);
   printf("Root directory start: %i\n", root_dir_start);
-  printf("Root directory blocks: %i\n", root_dir_blocks);
+  printf("Root directory blocks: %i\n\n", root_dir_blocks);
 
-  fclose(fp);
-  free(buffer);
   return(EXIT_SUCCESS);
 }
