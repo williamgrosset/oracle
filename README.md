@@ -1,5 +1,5 @@
 # oracle
-:cd: A 1-up to the Microsoft FAT file system.<br />
+:cd: A 1-up to the Microsoft FAT (File Allocation Table) file system.<br />
 <p align="center">
   <img alt="1-up" src="https://user-images.githubusercontent.com/16131737/37385328-c42681cc-2710-11e8-8213-13ce1aa3aafd.gif" />
 </p>
@@ -15,7 +15,7 @@
 + Test on linux lab machine
 
 ## Overview
-This project was an assignment for the [Operating Systems](https://github.com/williamgrosset/oracle/blob/master/csc360_p3.pdf) class at the University of Victoria. The file system implementation
+This project was an assignment for the [Operating Systems](https://github.com/williamgrosset/oracle/blob/master/csc360_p3.pdf) class at the University of Victoria. The file system implementation...
 
 ## Usage
 ### Compile
@@ -29,7 +29,7 @@ make clean
 ```
 
 ### Run `diskinfo`
-Displays information about the file system. See sample output.
+Display information about the file system super block and FAT. See sample output.
 ```bash
 ./diskinfo.o test.img
 ```
@@ -38,7 +38,7 @@ Displays information about the file system. See sample output.
 ...
 
 ### Run `disklist`
-Display content for the given directory. See sample output.
+Display content for the given file system directory. See sample output.
 ```bash
 ./disklist.o test.img /sub_dir 
 ```
@@ -46,7 +46,7 @@ Display content for the given directory. See sample output.
 ...
 
 ### Run `diskget`
-Copy a file from the file system to the current directory. If specified file is not found in file system, an error message will be displayed. See sample output.
+Copy a file from the file system to the current directory. If the specified file is not found in the file system, an error message will be displayed. See sample output.
 ```bash
 ./diskget.o test.img /sub_dir/foo2.txt foo.txt 
 ```
@@ -55,7 +55,7 @@ Copy a file from the file system to the current directory. If specified file is 
 ...
 
 ### Run `diskput`
-Copy a file from current directory into the given directory of the file system. If specified file is not found in current directory, an error message will be displayed. See sample output.
+Copy a file from the current directory into a directory of the file system. If the specified file is not found in the current directory, an error message will be displayed. See sample output.
 ```bash
 ./diskput.o test.img foo.txt /sub_dir/foo3.txt 
 ```
