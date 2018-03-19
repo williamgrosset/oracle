@@ -5,7 +5,6 @@
 </p>
 
 ## TODO
-+ Generate multiple binaries from single source
 + Convert all integer values to Big Endian (`netinit/in.h`: `htons` or `htonl`)
 + Finish `diskinfo` (PART 1)
 + Finish `disklist` (PART 2)
@@ -20,7 +19,7 @@ This project was an assignment for the [Operating Systems](https://github.com/wi
 ## Usage
 ### Compile
 ```
-make all 
+make
 ```
 
 ### Clean build
