@@ -49,15 +49,11 @@ int get_super_block_info(unsigned char* buffer, int start, int end) {
   return number;
 }
 
-void diskinfo(int argc, char* argv[]) {}
-void disklist(int argc, char* argv[]) {}
-void diskget(int argc, char* argv[]) {}
-void diskput(int argc, char* argv[]) {}
-
 int main(int argc, char* argv[]) {
+  // TODO: handle correct argv length
+
   unsigned char* buffer = fill_buffer(argv[1]);
 
-  /* DISKINFO: finish FAT information */
   int block_size = get_super_block_info(buffer, 8, 10);
   int block_count = get_super_block_info(buffer, 10, 14);
   int FAT_start = get_super_block_info(buffer, 14, 18);
@@ -74,8 +70,9 @@ int main(int argc, char* argv[]) {
   printf("Root directory blocks: %i\n\n", root_dir_blocks);
 
   printf("FAT information:\n");
-
-  /* DISKLIST */
+  printf("Free Blocks:\n");
+  printf("Reserved Blocks:\n");
+  printf("Allocated Blocks:\n");
 
   return(EXIT_SUCCESS);
 }
