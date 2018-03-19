@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "diskhelper.h" 
+#include "diskhelper.h"
 
 int get_super_block_info(unsigned char* buffer, int start, int end) {
   char hex_val[1024];
@@ -18,11 +18,15 @@ int get_super_block_info(unsigned char* buffer, int start, int end) {
   return number;
 }
 
+int get_FAT_info() { return 0; }
+
 int main(int argc, char* argv[]) {
-  // TODO: handle correct argv length
+  if (argc != 2) {
+    printf("Enter the correct amount of args: diskinfo <file system img>\n");
+    return(EXIT_FAILURE);
+  }
 
   unsigned char* buffer = disk_buffer(argv[1]);
-
   int block_size = get_super_block_info(buffer, 8, 10);
   int block_count = get_super_block_info(buffer, 10, 14);
   int FAT_start = get_super_block_info(buffer, 14, 18);
