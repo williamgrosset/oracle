@@ -25,7 +25,7 @@ unsigned char* disk_buffer(char* file) {
   } else {
     // For testing purposes
     int i;
-    for(i = 0; i < 0; i++) {
+    for(i = 0; i < 20; i++) {
       printf("%02x ", buffer[i]);
     }
   }

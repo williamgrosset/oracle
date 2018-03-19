@@ -5,6 +5,7 @@
 </p>
 
 ## TODO
++ **COMPLETE REWRITE**: Use `mmap()` instead of storing all values in bytes array
 + Convert all integer values to Big Endian (`netinit/in.h`: `htons` or `htonl`)
 + Finish `diskinfo` (PART 1)
 + Finish `disklist` (PART 2)

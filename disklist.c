@@ -12,10 +12,12 @@ int main(int argc, char* argv[]) {
   unsigned char* buffer = disk_buffer(argv[1]);
   int root_dir_start = get_super_block_info(buffer, 22, 26);
   int root_dir_blocks = get_super_block_info(buffer, 26, 30);
+  
+  printf("\n%x\n", buffer[27136]);
 
-  printf("Super block information:\n");
-  printf("Root directory start: %i\n", root_dir_start);
-  printf("Root directory blocks: %i\n\n", root_dir_blocks);
+  //printf("Super block information:\n");
+  //printf("Root directory start: %i\n", root_dir_start);
+  //printf("Root directory blocks: %i\n\n", root_dir_blocks);
 
   return(EXIT_SUCCESS);
 }
