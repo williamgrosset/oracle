@@ -55,7 +55,7 @@ Copy a file from the file system to the current directory. If the specified file
 ...
 
 ### Run `diskput`
-Copy a file from the current directory into a directory of the file system. If the specified file is not found in the current directory, an error message will be displayed. See sample output.
+Copy a file from the current directory into a file system directory. If the specified file is not found in the current directory, an error message will be displayed. See sample output.
 ```bash
 ./diskput.o test.img foo.txt /sub_dir/foo3.txt 
 ```

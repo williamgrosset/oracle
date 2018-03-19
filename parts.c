@@ -57,6 +57,7 @@ void diskput(int argc, char* argv[]) {}
 int main(int argc, char* argv[]) {
   unsigned char* buffer = fill_buffer(argv[1]);
 
+  /* DISKINFO */
   int block_size = get_super_block_info(buffer, 8, 10);
   int block_count = get_super_block_info(buffer, 10, 14);
   int FAT_start = get_super_block_info(buffer, 14, 18);
@@ -71,6 +72,8 @@ int main(int argc, char* argv[]) {
   printf("FAT blocks: %i\n", FAT_blocks);
   printf("Root directory start: %i\n", root_dir_start);
   printf("Root directory blocks: %i\n\n", root_dir_blocks);
+
+  /* DISKLIST */
 
   return(EXIT_SUCCESS);
 }
