@@ -6,24 +6,6 @@
 #include <sys/stat.h>
 #include "diskhelper.h"
 
-int get_fat_type_block_count(char* address, int fat_start, int block_size, int block_count, int value) {
-  // TODO: audit calc -> block_count (6400) * 4 + block_size (512)
-  int block_type_count = 0;
-  int total_count = block_count * 4 + block_size;
-  int i;
-  for (i = 0; i < total_count; i += 4) {
-    int block = 0;
-    int offset = (fat_start - 1) * block_size + i;
-    memcpy(&block, address + offset, 4);
-    if (htonl(block) == value) block_type_count++;
-  }
-  return block_type_count;
-}
-
-int get_fat_alloc_block_count(int block_count, int fat_free_blocks, int fat_reserv_blocks) {
-  return block_count - (fat_free_blocks + fat_reserv_blocks);
-}
-
 int main(int argc, char* argv[]) {
   if (argc != 3) {
     printf("Enter the correct amount of arguments: disklist <file system image> <directory>\n");
@@ -35,23 +17,18 @@ int main(int argc, char* argv[]) {
   void* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   struct superblock_t *superblock = address;
   uint16_t block_size = htons(superblock->block_size);
-  uint32_t block_count = htonl(superblock->file_system_block_count);
-  uint32_t fat_start = htonl(superblock->fat_start_block);
-  int fat_free_blocks = get_fat_type_block_count(address, fat_start, block_size, block_count, 0);
-  int fat_reserv_blocks = get_fat_type_block_count(address, fat_start, block_size, block_count, 1);
-  int fat_alloc_blocks = get_fat_alloc_block_count(block_count, fat_free_blocks, fat_reserv_blocks);
+  uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
+  int offset = (root_dir_start_block) * block_size;
+  struct dir_entry_t *dir_entry = address + offset;
 
-  printf("Super block information:\n");
-  printf("Block size: %d\n", block_size);
-  printf("Block count: %d\n", block_count);
-  printf("FAT starts: %d\n", fat_start);
-  printf("FAT blocks: %d\n", htonl(superblock->fat_block_count));
-  printf("Root directory start: %d\n", htonl(superblock->root_dir_start_block));
-  printf("Root directory blocks: %d\n\n", htonl(superblock->root_dir_block_count));
-  printf("FAT information:\n");
-  printf("Free Blocks: %i\n", fat_free_blocks);
-  printf("Reserved Blocks: %i\n", fat_reserv_blocks);
-  printf("Allocated Blocks: %i\n", fat_alloc_blocks);
+  int i;
+  for (i = 1; i <= 3; i++) {
+    printf("Status of file in root directory:\n");
+    printf("%x\n", dir_entry->status);
+    printf("File name:\n");
+    printf("%s\n", dir_entry->filename);
+    dir_entry = dir_entry + i;
+  }
 
   return(EXIT_SUCCESS);
 }
