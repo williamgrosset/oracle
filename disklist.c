@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -19,7 +18,6 @@ char get_file_type(uint8_t type) {
   else {
     return 'F';
   }
-  // TODO: else throw error
 }
 
 void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
@@ -27,7 +25,6 @@ void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_co
   while (i <= dir_block_count) {
     if (dir_entry->status == 0) break;
     struct dir_entry_timedate_t modify_time_struct = dir_entry->modify_time;
-    // TODO: map status to D or F
     printf("%c %10d %30s %04d/%02d/%02d %02d:%02d:%02d\n",
             get_file_type(dir_entry->status), htonl(dir_entry->size), dir_entry->filename,
             htons(modify_time_struct.year), modify_time_struct.month, modify_time_struct.day,
@@ -44,7 +41,7 @@ int main(int argc, char* argv[]) {
 
   int fd = open(argv[1], O_RDWR);
   struct stat buffer;
-  void* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
   struct superblock_t *superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
