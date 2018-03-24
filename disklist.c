@@ -25,11 +25,18 @@ int main(int argc, char* argv[]) {
   int i = 1;
   while (i <= root_dir_block_count) {
     if (dir_entry->status == 0) break;
+
+    struct dir_entry_timedate_t modify_time_struct = dir_entry->modify_time;
+    // TODO: map status to D or F
+    printf("Status:\n");
     printf("%x\n", dir_entry->status);
+    printf("File size:\n");
+    printf("%d\n", htonl(dir_entry->size));
     printf("File name:\n");
     printf("%s\n", dir_entry->filename);
-    dir_entry = dir_entry + i;
-    i++;
+    printf("Modification date (year):\n");
+    printf("%i\n", htons(modify_time_struct.year));
+    dir_entry += i++;
   }
 
   return(EXIT_SUCCESS);
