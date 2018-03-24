@@ -12,14 +12,25 @@
 *  + Support for sub-directories
 */
 
+char get_file_type(uint8_t type) {
+  if (type == 5) {
+    return 'D';
+  }
+  else {
+    return 'F';
+  }
+  // TODO: else throw error
+}
+
 void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
   int i = 1;
   while (i <= dir_block_count) {
     if (dir_entry->status == 0) break;
     struct dir_entry_timedate_t modify_time_struct = dir_entry->modify_time;
     // TODO: map status to D or F
-    printf("%x %10d %30s %04d/%02d/%02d %02d:%02d:%02d\n", dir_entry->status, htonl(dir_entry->size),
-            dir_entry->filename, htons(modify_time_struct.year), modify_time_struct.month, modify_time_struct.day,
+    printf("%c %10d %30s %04d/%02d/%02d %02d:%02d:%02d\n",
+            get_file_type(dir_entry->status), htonl(dir_entry->size), dir_entry->filename,
+            htons(modify_time_struct.year), modify_time_struct.month, modify_time_struct.day,
             modify_time_struct.hour, modify_time_struct.minute, modify_time_struct.second);
     dir_entry += i++;
   }
