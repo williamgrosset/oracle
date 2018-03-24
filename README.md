@@ -11,6 +11,7 @@
 + Finish `diskput` (PART 4)
 + Clean-up repo/nits
 + Error handling
++ Audit access restriction with `open (..., O_RDWR)`/`PROT_READ | PROT_WRITE`
 + Test on linux lab machine
 
 ## Overview

@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     return(EXIT_FAILURE);
   }
 
-  int fd = open(argv[1], O_RDWR);
+  int fd = open(argv[1], O_RDONLY);
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
   struct superblock_t *superblock = address;
