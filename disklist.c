@@ -35,11 +35,16 @@ void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_co
 
 int main(int argc, char* argv[]) {
   if (argc != 3) {
-    printf("Enter the correct amount of arguments: disklist <file system image> <directory>\n");
+    printf("Error - Enter the correct amount of arguments: disklist <file system image> <directory>\n");
     return(EXIT_FAILURE);
   }
 
   int fd = open(argv[1], O_RDONLY);
+  if (fd < 0) {
+    printf("Error - Failed to open disk image\n");
+    return(EXIT_FAILURE);
+  }
+
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
   struct superblock_t *superblock = address;

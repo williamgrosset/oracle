@@ -31,6 +31,11 @@ int main(int argc, char* argv[]) {
   }
 
   int fd = open(argv[1], O_RDWR);
+  if (fd < 0) {
+    printf("Error - Failed to open disk image\n");
+    return(EXIT_FAILURE);
+  }
+
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   struct superblock_t *superblock = address;
