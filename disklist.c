@@ -6,6 +6,23 @@
 #include <sys/stat.h>
 #include "diskhelper.h"
 
+void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
+  int i = 1;
+  while (i <= dir_block_count) {
+    if (dir_entry->status == 0) break;
+
+    struct dir_entry_timedate_t modify_time_struct = dir_entry->modify_time;
+    // TODO: map status to D or F
+    printf("%x ", dir_entry->status);
+    printf("%d ", htonl(dir_entry->size));
+    printf("%s ", dir_entry->filename);
+    //TODO: date support for 2005/04/09 instead of 2005/4/9
+    printf("%i/%i/%i ", htons(modify_time_struct.year), modify_time_struct.month, modify_time_struct.day);
+    printf("%i:%i:%i\n", modify_time_struct.hour, modify_time_struct.minute, modify_time_struct.second);
+    dir_entry += i++;
+  }
+}
+
 int main(int argc, char* argv[]) {
   if (argc != 3) {
     printf("Enter the correct amount of arguments: disklist <file system image> <directory>\n");
@@ -22,22 +39,7 @@ int main(int argc, char* argv[]) {
   int offset = (root_dir_start_block) * block_size;
   struct dir_entry_t *dir_entry = address + offset;
 
-  int i = 1;
-  while (i <= root_dir_block_count) {
-    if (dir_entry->status == 0) break;
-
-    struct dir_entry_timedate_t modify_time_struct = dir_entry->modify_time;
-    // TODO: map status to D or F
-    printf("Status:\n");
-    printf("%x\n", dir_entry->status);
-    printf("File size:\n");
-    printf("%d\n", htonl(dir_entry->size));
-    printf("File name:\n");
-    printf("%s\n", dir_entry->filename);
-    printf("Modification date (year):\n");
-    printf("%i\n", htons(modify_time_struct.year));
-    dir_entry += i++;
-  }
+  print_root_dir_content(dir_entry, root_dir_block_count);
 
   return(EXIT_SUCCESS);
 }
