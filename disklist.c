@@ -25,8 +25,8 @@ int get_fat_alloc_block_count(int block_count, int fat_free_blocks, int fat_rese
 }
 
 int main(int argc, char* argv[]) {
-  if (argc != 2) {
-    printf("Enter the correct amount of args: diskinfo <file system img>\n");
+  if (argc != 3) {
+    printf("Enter the correct amount of arguments: disklist <file system image> <directory>\n");
     return(EXIT_FAILURE);
   }
 
