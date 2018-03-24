@@ -47,7 +47,6 @@ Free Blocks: 6192
 Reserved Blocks: 50
 Allocated Blocks: 158
 ```
-...
 
 ### Run `disklist`
 Display content for the given file system directory. See sample output.
