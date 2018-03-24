@@ -29,7 +29,7 @@ make clean
 ```
 
 ### Run `diskinfo`
-Display information about the file system super block and FAT. See sample output.
+Display information about the file system super block and FAT.
 ```bash
 ./diskinfo.o test.img
 ```
@@ -51,15 +51,19 @@ Allocated Blocks: 158
 ```
 
 ### Run `disklist`
-Display content for the given file system directory. See sample output.
+Display content for the given file system directory.
 ```bash
-./disklist.o test.img /sub_dir 
+./disklist.o test.img /
 ```
 #### Sample output
-...
+```bash
+F        735                      mkfile.cc 2005/11/15 12:00:00
+F       2560                        foo.txt 2005/11/15 12:00:00
+F       3940                    disk.img.gz 2009/08/04 21:11:13
+```
 
 ### Run `diskget`
-Copy a file from the file system to the current directory. If the specified file is not found in the file system, an error message will be displayed. See sample output.
+Copy a file from the file system to the current directory. If the specified file is not found in the file system, an error message will be displayed.
 ```bash
 ./diskget.o test.img /sub_dir/foo2.txt foo.txt 
 ```
@@ -68,7 +72,7 @@ Copy a file from the file system to the current directory. If the specified file
 ...
 
 ### Run `diskput`
-Copy a file from the current directory into a file system directory. If the specified file is not found in the current directory, an error message will be displayed. See sample output.
+Copy a file from the current directory into a file system directory. If the specified file is not found in the current directory, an error message will be displayed.
 ```bash
 ./diskput.o test.img foo.txt /sub_dir/foo3.txt 
 ```
