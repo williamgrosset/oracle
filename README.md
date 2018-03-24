@@ -9,7 +9,8 @@
 + Finish `disklist` (PART 2)
 + Finish `diskget` (PART 3)
 + Finish `diskput` (PART 4)
-+ Clean-up repo
++ Clean-up repo/nits
++ Error handling
 + Test on linux lab machine
 
 ## Overview

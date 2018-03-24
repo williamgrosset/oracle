@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 
   int fd = open(argv[1], O_RDWR);
   struct stat buffer;
-  char* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  void* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   struct superblock_t *superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t block_count = htonl(superblock->file_system_block_count);
