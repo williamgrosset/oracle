@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include "diskhelper.h"
 
-int get_fat_type_block_count(char* address, int fat_start, int block_size, int block_count, int value) {
+int get_fat_type_block_count(void* address, int fat_start, int block_size, int block_count, int value) {
   // TODO: audit calc -> block_count (6400) * 4 + block_size (512)
   int block_type_count = 0;
   int total_count = block_count * 4 + block_size;
