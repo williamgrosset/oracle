@@ -18,16 +18,18 @@ int main(int argc, char* argv[]) {
   struct superblock_t *superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
+  uint32_t root_dir_block_count = htonl(superblock->root_dir_block_count);
   int offset = (root_dir_start_block) * block_size;
   struct dir_entry_t *dir_entry = address + offset;
 
-  int i;
-  for (i = 1; i <= 3; i++) {
-    printf("Status of file in root directory:\n");
+  int i = 1;
+  while (i <= root_dir_block_count) {
+    if (dir_entry->status == 0) break;
     printf("%x\n", dir_entry->status);
     printf("File name:\n");
     printf("%s\n", dir_entry->filename);
     dir_entry = dir_entry + i;
+    i++;
   }
 
   return(EXIT_SUCCESS);
