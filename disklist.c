@@ -6,19 +6,21 @@
 #include <sys/stat.h>
 #include "diskhelper.h"
 
+/*
+* TODO:
+*  + Handle finding directory from input
+*  + Support for sub-directories
+*/
+
 void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
   int i = 1;
   while (i <= dir_block_count) {
     if (dir_entry->status == 0) break;
-
     struct dir_entry_timedate_t modify_time_struct = dir_entry->modify_time;
     // TODO: map status to D or F
-    printf("%x ", dir_entry->status);
-    printf("%d ", htonl(dir_entry->size));
-    printf("%s ", dir_entry->filename);
-    //TODO: date support for 2005/04/09 instead of 2005/4/9
-    printf("%i/%i/%i ", htons(modify_time_struct.year), modify_time_struct.month, modify_time_struct.day);
-    printf("%i:%i:%i\n", modify_time_struct.hour, modify_time_struct.minute, modify_time_struct.second);
+    printf("%x %10d %30s %04d/%02d/%02d %02d:%02d:%02d\n", dir_entry->status, htonl(dir_entry->size),
+            dir_entry->filename, htons(modify_time_struct.year), modify_time_struct.month, modify_time_struct.day,
+            modify_time_struct.hour, modify_time_struct.minute, modify_time_struct.second);
     dir_entry += i++;
   }
 }
