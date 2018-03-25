@@ -26,19 +26,19 @@ int get_fat_alloc_block_count(int block_count, int fat_free_blocks, int fat_rese
 
 int main(int argc, char* argv[]) {
   if (argc != 2) {
-    printf("Enter the correct amount of arguments: diskinfo <file system image>\n");
+    printf("Enter the correct amount of arguments: diskinfo <file system image>.\n");
     return(EXIT_FAILURE);
   }
 
   int fd = open(argv[1], O_RDWR);
   if (fd < 0) {
-    printf("Error - Failed to open disk image\n");
+    printf("Failed to open disk image.\n");
     return(EXIT_FAILURE);
   }
 
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-  struct superblock_t *superblock = address;
+  struct superblock_t* superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t block_count = htonl(superblock->file_system_block_count);
   uint32_t fat_start = htonl(superblock->fat_start_block);

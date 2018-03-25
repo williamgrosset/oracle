@@ -33,7 +33,6 @@ Display information about the file system super block and FAT.
 ```bash
 ./diskinfo.o test.img
 ```
-
 #### Sample output
 ```bash
 Super block information:
@@ -63,19 +62,21 @@ F       3940                    disk.img.gz 2009/08/04 21:11:13
 ```
 
 ### Run `diskget`
-Copy a file from the file system to the current directory. If the specified file is not found in the file system, an error message will be displayed.
+Copy a file from a file system to the current directory. If the specified file is not found in the file system, an error message will be displayed.
 ```bash
-./diskget.o test.img /sub_dir/foo2.txt foo.txt 
+./diskget.o test.img /foo.txt foo2.txt
 ```
-
 #### Sample output
+```bash
 ...
+```
 
 ### Run `diskput`
 Copy a file from the current directory into a file system directory. If the specified file is not found in the current directory, an error message will be displayed.
 ```bash
 ./diskput.o test.img foo.txt /sub_dir/foo3.txt 
 ```
-
 #### Sample output
+```bash
 ...
+```

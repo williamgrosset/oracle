@@ -11,8 +11,8 @@
 *  + Support for sub-directories
 */
 
-char get_file_type(uint8_t type) {
-  if (type == 5) {
+char get_file_type(uint8_t file_type) {
+  if (file_type == 5) {
     return 'D';
   }
   else {
@@ -35,24 +35,24 @@ void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_co
 
 int main(int argc, char* argv[]) {
   if (argc != 3) {
-    printf("Error - Enter the correct amount of arguments: disklist <file system image> <directory>\n");
+    printf("Enter the correct amount of arguments: disklist <file system image> <directory>.\n");
     return(EXIT_FAILURE);
   }
 
   int fd = open(argv[1], O_RDONLY);
   if (fd < 0) {
-    printf("Error - Failed to open disk image\n");
+    printf("Failed to open disk image.\n");
     return(EXIT_FAILURE);
   }
 
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
-  struct superblock_t *superblock = address;
+  struct superblock_t* superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
   uint32_t root_dir_block_count = htonl(superblock->root_dir_block_count);
   int offset = (root_dir_start_block) * block_size;
-  struct dir_entry_t *dir_entry = address + offset;
+  struct dir_entry_t* dir_entry = address + offset;
 
   print_root_dir_content(dir_entry, root_dir_block_count);
 
