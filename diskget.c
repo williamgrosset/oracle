@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
@@ -7,11 +8,12 @@
 #include "diskhelper.h"
 
 struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
-  struct dir_entry_t* file_entry = dir_entry;
+  struct dir_entry_t* file_entry = NULL;
   int i = 1;
   while (i <= dir_block_count) {
     if (dir_entry->status == 0) break;
-    if (filename == dir_entry->filename) {
+    if (strcmp(filename, (char *)dir_entry->filename) == 0) {
+      printf("We found the file!\n");
       file_entry = dir_entry;
       return file_entry;
     }
@@ -41,10 +43,10 @@ int main(int argc, char* argv[]) {
   uint32_t root_dir_block_count = htonl(superblock->root_dir_block_count);
   int offset = (root_dir_start_block) * block_size;
   struct dir_entry_t* root_dir_entry = address + offset;
-  struct dir_entry_t* file_entry = get_file_entry(argv[1], root_dir_entry, root_dir_block_count);
+  struct dir_entry_t* file_entry = get_file_entry(argv[2], root_dir_entry, root_dir_block_count);
 
   // find matching file and grab pointer to file size
-  if (htonl(file_entry->size) > 0) {
+  if (file_entry != NULL && htonl(file_entry->size) > 0) {
     printf("ay\n");
   } else {
     printf("File not found.\n");
