@@ -25,8 +25,8 @@ struct __attribute__((__packed__)) dir_entry_t {
   uint32_t starting_block;
   uint32_t block_count;
   uint32_t size;
-  struct dir_entry_timedate_t modify_time;
   struct dir_entry_timedate_t create_time;
+  struct dir_entry_timedate_t modify_time;
   uint8_t filename[31];
   uint8_t unused[6];
 };
