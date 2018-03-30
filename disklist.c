@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include "diskhelper.h"
@@ -47,6 +48,12 @@ int main(int argc, char* argv[]) {
 
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
+  if (address == MAP_FAILED) {
+    printf("Failed to map disk image.\n");
+    close(fd);
+    return(EXIT_FAILURE);
+  }
+
   struct superblock_t* superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);

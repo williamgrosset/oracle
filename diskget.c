@@ -34,6 +34,12 @@ int main(int argc, char* argv[]) {
 
   struct stat buffer;
   void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
+  if (address == MAP_FAILED) {
+    printf("Failed to map disk image.\n");
+    close(fd);
+    return(EXIT_FAILURE);
+  }
+
   struct superblock_t* superblock = address;
   uint16_t block_size = htons(superblock->block_size);
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
@@ -55,6 +61,11 @@ int main(int argc, char* argv[]) {
     int result = lseek(new_fd, file_size - 1, SEEK_SET);
     result = write(new_fd, "", 1);
     void* new_address = mmap(NULL, file_size, PROT_WRITE, MAP_SHARED, new_fd, 0);
+    if (new_address == MAP_FAILED) {
+      printf("Failed to map disk image.\n");
+      close(fd);
+      return(EXIT_FAILURE);
+    }
 
     // copy file content
 
