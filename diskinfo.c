@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
   }
 
   struct stat buffer;
-  void* address = mmap(NULL, buffer.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  void* address = mmap(NULL, buffer.st_size, PROT_READ, MAP_SHARED, fd, 0);
   if (address == MAP_FAILED) {
     printf("Failed to map disk image.\n");
     close(fd);
