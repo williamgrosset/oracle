@@ -66,17 +66,9 @@ Copy a file from a file system to the current directory. If the specified file i
 ```bash
 ./diskget.o test.img /foo.txt foo2.txt
 ```
-#### Sample output
-```bash
-...
-```
 
 ### Run `diskput`
 Copy a file from the current directory into a file system directory. If the specified file is not found in the current directory, an error message will be displayed.
 ```bash
 ./diskput.o test.img foo.txt /sub_dir/foo3.txt 
-```
-#### Sample output
-```bash
-...
 ```
