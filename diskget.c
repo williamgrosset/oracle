@@ -8,18 +8,15 @@
 #include "diskhelper.h"
 
 struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
-  struct dir_entry_t* file_entry = NULL;
   int i = 1;
   while (i <= dir_block_count) {
     if (dir_entry->status == 0) break;
     if (strcmp(filename, (char *)dir_entry->filename) == 0) {
-      printf("We found the file!\n");
-      file_entry = dir_entry;
-      return file_entry;
+      return dir_entry;
     }
     dir_entry += i++;
   }
-  return file_entry;
+  return NULL;
 }
 
 int main(int argc, char* argv[]) {
@@ -44,21 +41,28 @@ int main(int argc, char* argv[]) {
   int offset = (root_dir_start_block) * block_size;
   struct dir_entry_t* root_dir_entry = address + offset;
   struct dir_entry_t* file_entry = get_file_entry(argv[2], root_dir_entry, root_dir_block_count);
+  uint32_t file_size = htonl(file_entry->size);
 
-  // find matching file and grab pointer to file size
-  if (file_entry != NULL && htonl(file_entry->size) > 0) {
-    printf("ay\n");
+  if (file_entry != NULL && file_size > 0) {
+    int new_fd = open(argv[3], O_RDWR | O_CREAT, 0666);
+    if (new_fd < 0) {
+      printf("Failed to open disk image.\n");
+      close(new_fd);
+      return(EXIT_FAILURE);
+    }
+
+    // TODO: error handling
+    int result = lseek(new_fd, file_size - 1, SEEK_SET);
+    result = write(new_fd, "", 1);
+    void* new_address = mmap(NULL, file_size, PROT_WRITE, MAP_SHARED, new_fd, 0);
+
+    // copy file content
+
+    munmap(new_address, file_size);
+    close(new_fd);
   } else {
     printf("File not found.\n");
   }
-
-  /*
-  int fd2 = open(argv[2], O_RDWR | O_CREAT, 0666);
-  if (fd2 < 0) {
-    printf("Failed to open disk image.\n");
-    close(fd2);
-    return(EXIT_FAILURE);
-  }*/
 
   munmap(address, buffer.st_size);
   close(fd);
