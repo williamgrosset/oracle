@@ -10,7 +10,6 @@
 struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
   int i = 1;
   while (i <= dir_block_count) {
-    if (dir_entry->status == 0) break;
     if (strcmp(filename, (char *)dir_entry->filename) == 0) {
       return dir_entry;
     }
@@ -57,9 +56,24 @@ int main(int argc, char* argv[]) {
       return(EXIT_FAILURE);
     }
 
-    // TODO: error handling
-    int result = lseek(new_fd, file_size - 1, SEEK_SET);
-    result = write(new_fd, "", 1);
+    printf("Starting block: %u\n", htonl(file_entry->starting_block));
+
+    if (lseek(new_fd, file_size - 1, SEEK_SET) == -1) {
+      munmap(address, buffer.st_size);
+      close(new_fd);
+      close(fd);
+      printf("Failed to stretch file.\n");
+      return(EXIT_FAILURE);
+    }
+    
+    if (write(new_fd, "", 1) == -1) {
+      munmap(address, buffer.st_size);
+      close(new_fd);
+      close(fd);
+      printf("Failed to write last byte of file.\n");
+      return(EXIT_FAILURE);
+    }
+
     void* new_address = mmap(NULL, file_size, PROT_WRITE, MAP_SHARED, new_fd, 0);
     if (new_address == MAP_FAILED) {
       printf("Failed to map disk image.\n");
@@ -68,6 +82,7 @@ int main(int argc, char* argv[]) {
     }
 
     // copy file content
+    // copy_file(address, new_address);
 
     munmap(new_address, file_size);
     close(new_fd);
