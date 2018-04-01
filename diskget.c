@@ -18,6 +18,15 @@ struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry
   return NULL;
 }
 
+void copy_file(void* p1, void* p2, int file_size) {
+  int bytes_remaining = file_size;
+  // get fat_entry w/ offset
+  // while pointer to fat_entry != 0xFF:
+  // if bytes_remaining <= 0: break
+  // jump to block location and add content to new file
+  // move pointer to next fat_entry address
+}
+
 int main(int argc, char* argv[]) {
   if (argc != 4) {
     printf("Enter the correct amount of arguments: diskget <file system image> <file> <file>.\n");
@@ -57,6 +66,8 @@ int main(int argc, char* argv[]) {
     }
 
     printf("Starting block: %u\n", htonl(file_entry->starting_block));
+    printf("Number of blocks: %u\n", htonl(file_entry->block_count));
+    printf("File size: %u\n", file_size);
 
     if (lseek(new_fd, file_size - 1, SEEK_SET) == -1) {
       munmap(address, buffer.st_size);
@@ -82,7 +93,7 @@ int main(int argc, char* argv[]) {
     }
 
     // copy file content
-    // copy_file(address, new_address);
+    copy_file(address, new_address, (int)file_size);
 
     munmap(new_address, file_size);
     close(new_fd);
