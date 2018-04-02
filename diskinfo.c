@@ -8,14 +8,14 @@
 #include "diskstructs.h"
 
 int get_fat_type_block_count(void* address, int fat_start, int block_size, int block_count, int value) {
-  // TODO: audit calc -> block_count (6400) * 4 + block_size (512)
   int block_type_count = 0;
-  int total_count = block_count * 4 + block_size;
-  int i;
-  for (i = 0; i < total_count; i += 4) {
+  int fat_end = (fat_start + block_count - 1) * block_size;
+  int i = 0;
+  for (i = 0; i < fat_end; i += 4) {
     int block = 0;
-    int offset = (fat_start - 1) * block_size + i;
+    int offset = fat_start * block_size + i;
     memcpy(&block, address + offset, 4);
+
     if (htonl(block) == value) block_type_count++;
   }
   return block_type_count;
@@ -49,8 +49,9 @@ int main(int argc, char* argv[]) {
   uint16_t block_size = htons(superblock->block_size);
   uint32_t block_count = htonl(superblock->file_system_block_count);
   uint32_t fat_start = htonl(superblock->fat_start_block);
-  int fat_free_blocks = get_fat_type_block_count(address, fat_start, block_size, block_count, 0);
-  int fat_reserv_blocks = get_fat_type_block_count(address, fat_start, block_size, block_count, 1);
+  uint32_t fat_block_count = htonl(superblock->fat_block_count);
+  int fat_free_blocks = get_fat_type_block_count(address, fat_start, block_size, fat_block_count, 0);
+  int fat_reserv_blocks = get_fat_type_block_count(address, fat_start, block_size, fat_block_count, 1);
   int fat_alloc_blocks = get_fat_alloc_block_count(block_count, fat_free_blocks, fat_reserv_blocks);
 
   printf("Super block information:\n");
