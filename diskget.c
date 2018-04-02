@@ -20,14 +20,10 @@ struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry
 
 void copy_file(void* address, void* new_address, int fat_start, int starting_block, int block_size, int file_size) {
   int fat_entry = starting_block;
-  int prev_fat_entry = 0;
   int bytes_remaining = file_size;
   int data_block = fat_entry * block_size;
 
-  int temp = 0;
-  while (prev_fat_entry != -1) {
-    if (temp == 2) break;
-    prev_fat_entry = fat_entry;
+  while (fat_entry != -1) {
     int i = 0;
     // Go through data block and add content to new_address
     for (i = 0; i < block_size; i += 4) {
@@ -42,12 +38,12 @@ void copy_file(void* address, void* new_address, int fat_start, int starting_blo
     // move pointer to next fat_entry address
     int fat_location = fat_start * block_size;
     printf("Fat entry location: %i\n", fat_location + fat_entry);
-    memcpy(&fat_entry, address + (fat_location + fat_entry - 1), 4);
+    fat_entry = fat_entry * 4;
+    memcpy(&fat_entry, address + (fat_location + fat_entry), 4);
+    fat_entry = htonl(fat_entry);
     data_block = fat_entry * block_size;
     printf("Next fat entry: %i\n", fat_entry);
     // printf("Next data block: %i\n", data_block);
-
-    temp++;
   }
 }
 
