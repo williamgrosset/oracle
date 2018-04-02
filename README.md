@@ -5,10 +5,6 @@
 </p>
 
 ## TODO
-+ Finish `diskinfo` (PART 1)
-+ Finish `disklist` (PART 2)
-+ Finish `diskget` (PART 3)
-+ Finish `diskput` (PART 4)
 + Clean-up repo/nits
   + Clean-up of closing files etc.
 + Error handling
@@ -51,7 +47,7 @@ Allocated Blocks: 158
 ```
 
 ### Run `disklist`
-Display content for the given file system directory.
+Display content for the file system root directory.
 ```bash
 ./disklist.o test.img /
 ```
@@ -66,10 +62,4 @@ F       3940                    disk.img.gz 2009/08/04 21:11:13
 Copy a file from a file system to the current directory. If the specified file is not found in the file system, an error message will be displayed.
 ```bash
 ./diskget.o test.img /foo.txt foo2.txt
-```
-
-### Run `diskput`
-Copy a file from the current directory into a file system directory. If the specified file is not found in the current directory, an error message will be displayed.
-```bash
-./diskput.o test.img foo.txt /sub_dir/foo3.txt 
 ```
