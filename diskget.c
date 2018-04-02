@@ -5,9 +5,11 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <stdint.h>
+#include <arpa/inet.h>
 #include "diskstructs.h"
 
-struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
+struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, int dir_block_count) {
   int i = 1;
   while (i <= dir_block_count) {
     if (strcmp(filename, (char*)dir_entry->filename) == 0) {
@@ -30,14 +32,14 @@ void copy_file(void* address, void* new_address, int fat_start, int starting_blo
       int offset = i + data_block;
       int data = 0;
 
-      memcpy(&data, address + offset, 4);
-      memcpy(new_address + (file_size - bytes_remaining), &data, 4);
+      memcpy(&data, (char*)address + offset, 4);
+      memcpy((char*)new_address + (file_size - bytes_remaining), &data, 4);
       bytes_remaining -= 4;
     }
 
     int fat_location = fat_start * block_size;
     fat_entry = fat_entry * 4;
-    memcpy(&fat_entry, address + (fat_location + fat_entry), 4);
+    memcpy(&fat_entry, (char*)address + (fat_location + fat_entry), 4);
     fat_entry = htonl(fat_entry);
     data_block = fat_entry * block_size;
   }
@@ -70,8 +72,8 @@ int main(int argc, char* argv[]) {
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
   uint32_t root_dir_block_count = htonl(superblock->root_dir_block_count);
   int offset = (root_dir_start_block) * block_size;
-  struct dir_entry_t* root_dir_entry = address + offset;
-  struct dir_entry_t* file_entry = get_file_entry(argv[2], root_dir_entry, root_dir_block_count);
+  struct dir_entry_t* root_dir_entry = (void*)((char*)address + offset);
+  struct dir_entry_t* file_entry = get_file_entry(argv[2], root_dir_entry, (int)root_dir_block_count);
   uint32_t file_size = htonl(file_entry->size);
   uint32_t starting_block = htonl(file_entry->starting_block);
 

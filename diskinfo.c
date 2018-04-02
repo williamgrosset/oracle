@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <stdint.h>
+#include <arpa/inet.h>
 #include "diskstructs.h"
 
 int get_fat_type_block_count(void* address, int fat_start, int block_size, int block_count, int value) {
@@ -14,9 +16,9 @@ int get_fat_type_block_count(void* address, int fat_start, int block_size, int b
   for (i = 0; i < fat_end; i += 4) {
     int block = 0;
     int offset = fat_start * block_size + i;
-    memcpy(&block, address + offset, 4);
+    memcpy(&block, (char*) address + offset, 4);
 
-    if (htonl(block) == value) block_type_count++;
+    if ((int)htonl(block) == value) block_type_count++;
   }
   return block_type_count;
 }

@@ -1,8 +1,8 @@
 .PHONY all:
 all:
-	gcc -Wall diskstructs.c diskinfo.c -o diskinfo.o
-	gcc -Wall diskstructs.c disklist.c -o disklist.o
-	gcc -Wall diskstructs.c diskget.c -o diskget.o
+	gcc -Wall -Wextra -Werror -pedantic-errors diskstructs.c diskinfo.c -o diskinfo.o
+	gcc -Wall -Wextra -Werror -pedantic-errors diskstructs.c disklist.c -o disklist.o
+	gcc -Wall -Wextra -Werror -pedantic-errors diskstructs.c diskget.c -o diskget.o
 
 .PHONY clean:
 clean:

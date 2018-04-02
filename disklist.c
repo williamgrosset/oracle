@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <stdint.h>
+#include <arpa/inet.h>
 #include "diskstructs.h"
 
 char get_file_type(uint8_t file_type) {
@@ -12,7 +14,7 @@ char get_file_type(uint8_t file_type) {
   else return 'F';
 }
 
-void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
+void print_root_dir_content(struct dir_entry_t* dir_entry, int dir_block_count) {
   int i = 1;
   while (i <= dir_block_count) {
     if (dir_entry->status == 0) break;
@@ -50,9 +52,9 @@ int main(int argc, char* argv[]) {
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
   uint32_t root_dir_block_count = htonl(superblock->root_dir_block_count);
   int offset = (root_dir_start_block) * block_size;
-  struct dir_entry_t* dir_entry = address + offset;
+  struct dir_entry_t* dir_entry = (void*)((char*)address + offset);
 
-  print_root_dir_content(dir_entry, root_dir_block_count);
+  print_root_dir_content(dir_entry, (int)root_dir_block_count);
 
   munmap(address, buffer.st_size);
   close(fd);
