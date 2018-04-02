@@ -36,13 +36,13 @@ void copy_file(void* address, void* new_address, int fat_start, int starting_blo
       int data = 0;
 
       memcpy(&data, address + offset, 4);
-      memcpy(new_address + i, &data, 4);
+      memcpy(new_address + (file_size - bytes_remaining), &data, 4);
       bytes_remaining -= 4;
     }
     // move pointer to next fat_entry address
     int fat_location = fat_start * block_size;
     printf("Fat entry location: %i\n", fat_location + fat_entry);
-    memcpy(&fat_entry, address + (fat_location + fat_entry), 4);
+    memcpy(&fat_entry, address + (fat_location + fat_entry - 1), 4);
     data_block = fat_entry * block_size;
     printf("Next fat entry: %i\n", fat_entry);
     // printf("Next data block: %i\n", data_block);
