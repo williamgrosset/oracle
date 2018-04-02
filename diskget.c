@@ -10,7 +10,7 @@
 struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
   int i = 1;
   while (i <= dir_block_count) {
-    if (strcmp(filename, (char *)dir_entry->filename) == 0) {
+    if (strcmp(filename, (char*)dir_entry->filename) == 0) {
       return dir_entry;
     }
     dir_entry += i++;
@@ -18,13 +18,37 @@ struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry
   return NULL;
 }
 
-void copy_file(void* p1, void* p2, int file_size) {
+void copy_file(void* address, void* new_address, int fat_start, int starting_block, int block_size, int file_size) {
+  int fat_entry = starting_block;
+  int prev_fat_entry = 0;
   int bytes_remaining = file_size;
-  // get fat_entry w/ offset
-  // while pointer to fat_entry != 0xFF:
-  // if bytes_remaining <= 0: break
-  // jump to block location and add content to new file
-  // move pointer to next fat_entry address
+  int data_block = fat_entry * block_size;
+
+  int temp = 0;
+  while (prev_fat_entry != -1) {
+    if (temp == 2) break;
+    prev_fat_entry = fat_entry;
+    int i = 0;
+    // Go through data block and add content to new_address
+    for (i = 0; i < block_size; i += 4) {
+      if (bytes_remaining == 0) break;
+      int offset = i + data_block;
+      int data = 0;
+
+      memcpy(&data, address + offset, 4);
+      memcpy(new_address + i, &data, 4);
+      bytes_remaining -= 4;
+    }
+    // move pointer to next fat_entry address
+    int fat_location = fat_start * block_size;
+    printf("Fat entry location: %i\n", fat_location + fat_entry);
+    memcpy(&fat_entry, address + (fat_location + fat_entry), 4);
+    data_block = fat_entry * block_size;
+    printf("Next fat entry: %i\n", fat_entry);
+    // printf("Next data block: %i\n", data_block);
+
+    temp++;
+  }
 }
 
 int main(int argc, char* argv[]) {
@@ -50,12 +74,14 @@ int main(int argc, char* argv[]) {
 
   struct superblock_t* superblock = address;
   uint16_t block_size = htons(superblock->block_size);
+  uint32_t fat_start = htonl(superblock->fat_start_block);
   uint32_t root_dir_start_block = htonl(superblock->root_dir_start_block);
   uint32_t root_dir_block_count = htonl(superblock->root_dir_block_count);
   int offset = (root_dir_start_block) * block_size;
   struct dir_entry_t* root_dir_entry = address + offset;
   struct dir_entry_t* file_entry = get_file_entry(argv[2], root_dir_entry, root_dir_block_count);
   uint32_t file_size = htonl(file_entry->size);
+  uint32_t starting_block = htonl(file_entry->starting_block);
 
   if (file_entry != NULL && file_size > 0) {
     int new_fd = open(argv[3], O_RDWR | O_CREAT, 0666);
@@ -65,7 +91,7 @@ int main(int argc, char* argv[]) {
       return(EXIT_FAILURE);
     }
 
-    printf("Starting block: %u\n", htonl(file_entry->starting_block));
+    printf("Starting block: %u\n", starting_block);
     printf("Number of blocks: %u\n", htonl(file_entry->block_count));
     printf("File size: %u\n", file_size);
 
@@ -93,7 +119,7 @@ int main(int argc, char* argv[]) {
     }
 
     // copy file content
-    copy_file(address, new_address, (int)file_size);
+    copy_file(address, new_address, (int)fat_start, (int)starting_block, (int)block_size, (int)file_size);
 
     munmap(new_address, file_size);
     close(new_fd);
