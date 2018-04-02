@@ -54,5 +54,7 @@ int main(int argc, char* argv[]) {
 
   print_root_dir_content(dir_entry, root_dir_block_count);
 
+  munmap(address, buffer.st_size);
+  close(fd);
   return(EXIT_SUCCESS);
 }

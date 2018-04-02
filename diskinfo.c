@@ -65,5 +65,7 @@ int main(int argc, char* argv[]) {
   printf("Reserved Blocks: %i\n", fat_reserv_blocks);
   printf("Allocated Blocks: %i\n", fat_alloc_blocks);
 
+  munmap(address, buffer.st_size);
+  close(fd);
   return(EXIT_SUCCESS);
 }

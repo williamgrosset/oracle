@@ -59,7 +59,7 @@ F       3940                    disk.img.gz 2009/08/04 21:11:13
 ```
 
 ### Run `diskget`
-Copy a file from a file system to the current directory. If the specified file is not found in the file system, an error message will be displayed.
+Copy a file from the file system root directory to the current directory. If the specified file is not found in the file system, an error message will be displayed.
 ```bash
-./diskget.o test.img /foo.txt foo2.txt
+./diskget.o test.img mkfile.cc foo2.txt
 ```
