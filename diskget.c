@@ -25,7 +25,6 @@ void copy_file(void* address, void* new_address, int fat_start, int starting_blo
 
   while (fat_entry != -1) {
     int i = 0;
-    // Go through data block and add content to new_address
     for (i = 0; i < block_size; i += 4) {
       if (bytes_remaining == 0) break;
       int offset = i + data_block;
@@ -35,15 +34,12 @@ void copy_file(void* address, void* new_address, int fat_start, int starting_blo
       memcpy(new_address + (file_size - bytes_remaining), &data, 4);
       bytes_remaining -= 4;
     }
-    // move pointer to next fat_entry address
+
     int fat_location = fat_start * block_size;
-    printf("Fat entry location: %i\n", fat_location + fat_entry);
     fat_entry = fat_entry * 4;
     memcpy(&fat_entry, address + (fat_location + fat_entry), 4);
     fat_entry = htonl(fat_entry);
     data_block = fat_entry * block_size;
-    printf("Next fat entry: %i\n", fat_entry);
-    // printf("Next data block: %i\n", data_block);
   }
 }
 
@@ -86,10 +82,6 @@ int main(int argc, char* argv[]) {
       close(new_fd);
       return(EXIT_FAILURE);
     }
-
-    printf("Starting block: %u\n", starting_block);
-    printf("Number of blocks: %u\n", htonl(file_entry->block_count));
-    printf("File size: %u\n", file_size);
 
     if (lseek(new_fd, file_size - 1, SEEK_SET) == -1) {
       munmap(address, buffer.st_size);
