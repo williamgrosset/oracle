@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
@@ -25,8 +26,8 @@ void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_co
 }
 
 int main(int argc, char* argv[]) {
-  if (argc != 3) {
-    printf("Enter the correct amount of arguments: disklist <file system image> <directory>.\n");
+  if (argc != 3 || strcmp(argv[2], "/") != 0) {
+    printf("Enter the correct arguments: disklist <file system image> /.\n");
     return(EXIT_FAILURE);
   }
 
