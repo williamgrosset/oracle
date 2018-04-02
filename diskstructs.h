@@ -30,5 +30,3 @@ struct __attribute__((__packed__)) dir_entry_t {
   uint8_t filename[31];
   uint8_t unused[6];
 };
-
-void* map_memory();

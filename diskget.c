@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-#include "diskhelper.h"
+#include "diskstructs.h"
 
 struct dir_entry_t* get_file_entry(char* filename, struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
   int i = 1;
