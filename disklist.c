@@ -6,19 +6,9 @@
 #include <sys/stat.h>
 #include "diskstructs.h"
 
-/*
-* TODO:
-*  + Handle finding directory from input
-*  + Support for sub-directories
-*/
-
 char get_file_type(uint8_t file_type) {
-  if (file_type == 5) {
-    return 'D';
-  }
-  else {
-    return 'F';
-  }
+  if (file_type == 5) return 'D';
+  else return 'F';
 }
 
 void print_root_dir_content(struct dir_entry_t* dir_entry, uint32_t dir_block_count) {
