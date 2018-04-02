@@ -45,7 +45,7 @@ void copy_file(void* address, void* new_address, int fat_start, int starting_blo
 
 int main(int argc, char* argv[]) {
   if (argc != 4) {
-    printf("Enter the correct amount of arguments: diskget <file system image> <file> <file>.\n");
+    printf("Enter the correct arguments: diskget <file system image> <file 1> <file 2>.\n");
     return(EXIT_FAILURE);
   }
 
@@ -106,7 +106,6 @@ int main(int argc, char* argv[]) {
       return(EXIT_FAILURE);
     }
 
-    // copy file content
     copy_file(address, new_address, (int)fat_start, (int)starting_block, (int)block_size, (int)file_size);
 
     munmap(new_address, file_size);
