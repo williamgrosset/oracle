@@ -5,7 +5,7 @@
 </p>
 
 ## Overview
-This project was an assignment for the [Operating Systems](https://github.com/williamgrosset/oracle/blob/master/csc360_p3.pdf) class at the University of Victoria. The file system implementation/1-up description...
+This project was an assignment for the [Operating Systems](https://github.com/williamgrosset/oracle/blob/master/csc360_p3.pdf) class at the University of Victoria. The programs `diskinfo` and `disklist` will return information regarding the file system superblock, FAT, and directory content, with `diskget` allowing users to copy a file from the file system root directory to the current directory.
 
 ## Usage
 ### Compile
