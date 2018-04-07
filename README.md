@@ -1,7 +1,8 @@
-# oracle
-:cd: FAT file system parser.<br />
 <p align="center">
-  <img alt="1-up" src="https://user-images.githubusercontent.com/16131737/37385328-c42681cc-2710-11e8-8213-13ce1aa3aafd.gif" />
+  <img alt="oracle" src="https://user-images.githubusercontent.com/16131737/38450102-528f8cbe-39cd-11e8-8352-bb89403adec6.png" height="60%" width="60%" />
+</p>
+<p align="center">
+  <img alt="mario" src="https://user-images.githubusercontent.com/16131737/37385328-c42681cc-2710-11e8-8213-13ce1aa3aafd.gif" />
 </p>
 
 ## Overview
